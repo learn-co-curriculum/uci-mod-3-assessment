@@ -78,6 +78,7 @@ students in all class instances.
 Write an `#add_grade` instance method that takes in two arguments, a student
 instance and an integer grade, then sets the student's grade using the student's
 `grade` attribute accessor.
+( might not want to spec the how)
 
 #### `#all_existing_grades`
 
@@ -89,6 +90,8 @@ grades, ignoring any ungraded students.
 Write an `#all_students_graded?` method that checks if there are students
 enrolled in the course. If so, it returns true if all students have grades, or
 false if some students have not been given grades yet.
+
+(conflated, confusing)
 
 #### `#average_grade`
 
