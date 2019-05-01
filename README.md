@@ -1,52 +1,98 @@
-# Triangle
+# UCI Mod 3 Assessment
 
-## Objectives
+## Introduction
 
-1.  Define a custom error and use it.
+In this assessment, you will be building a tool for helping teachers organize
+the courses they teach and the students in each. As this is designed from a
+teacher's perspective, a course has many students, and each student belongs to
+a specific course (though we know you may actually be taking multiple courses).
+
+Your task is to build a set of collaborating Ruby objects, one to handle
+instances of `Course`s and one to handle `Student`s. Write your solution in
+`lib/oo_course_domain.rb` following the instructions below.
 
 ## Instructions
 
-- Write a `Triangle` class that accepts three arguments on initialization. Each
-  argument is a length of one of the three sides of the triangle.
+### Student Class
 
-- Give your Triangles an instance method, `kind` that returns, as a symbol, its
-  type. The valid types are:
+#### `@@all` Class Variable
 
-1.  `:equilateral`
+- Create an `@@all` class variable set to an array.
+- Write a `.all` class method that returns an array of all student instances
+  that have been created.
 
-2.  `:isosceles`
+#### Initializing Student Instances
 
-3.  `:scalene`
+Student instances should be initialized with an argument of a `name`. On
+initialization, the new student instance should be pushed into the `@@all` class
+variable.
 
-- The `kind` method should raise a custom error, `TriangleError` if the triangle
-  is invalid. Check out the hint below to understand what makes a triangle
-  invalid. Write a custom error class, `TriangleError` and inherit it from
-  `StandardError`. This custom error class should be defined in the same file as
-  the `Triangle` class, inside the `Triangle` class definition. Like
-  this:
+#### Attribute Accessors
 
-```ruby
-# lib/triangle.rb
+Students instances should have `name`, `course` and `grade` accessors. Since we
+have only assigned `name` when initializing, `course` and `grade` by default
+should return `nil` until they are assigned.
 
-class Triangle
-  # triangle code
+### Course Class
 
-  class TriangleError < StandardError
-    # triangle error code
-  end
-end
-```
+#### `@@all` Class Variable
 
-## Hint
+- Create an `@@all` class variable set to an array.
+- Write a `.all` class method that returns an array of all course instances
+  that have been created.
 
-The sum of the lengths of any two sides of a triangle always exceeds the length
-of the third side. This is a principle known as the _triangle inequality_.
+#### Initializing Course Instances
 
-Further, each side must be larger than 0.
+Course instances should be initialized with an argument of a `name`. On
+initialization, the new course instance should be pushed into the `@@all` class
+variable.
 
-## Resources
+#### Attribute Accessors
 
-- [Exception Handling](http://www.skorks.com/2009/09/ruby-exceptions-and-exception-handling/)
-- [Basic Mathematics](http://www.basic-mathematics.com/) - [Types of Triangles](http://www.basic-mathematics.com/types-of-triangles.html)
+Course instances should have a `name` attribute accessor.
 
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/triangle-classification' title='Triangle'>Triangle</a> on Learn.co and start learning to code for free.</p>
+#### `add_student`
+
+Write an `#add_student` instance method that takes in a student instance as an
+argument and associates that student with the course. It should do this by
+telling the student that it belongs to this particular course.
+
+#### `#students`
+
+Write a `#students` instance method that returns a collection of student
+instances unique to the course instance.
+
+#### `#add_student_by_name`
+
+Write an `#add_student_by_name` instance method that takes in a student name as a
+string, creates a new student instance, and associates that student with the
+course instance.
+
+#### `.student_count`
+
+Write a `.student_count` **class** method that returns the total number of all
+students in all class instances.
+
+#### `#add_grade`
+
+Write an `#add_grade` instance method that takes in two arguments, a student
+instance and an integer grade, then sets the student's grade using the student's
+`grade` attribute accessor.
+
+#### `#all_existing_grades`
+
+Write an `#all_existing_grades` method that returns a collection of all added
+grades, ignoring any ungraded students.
+
+#### `#all_students_graded?`
+
+Write an `#all_students_graded?` method that checks if there are students
+enrolled in the course. If so, it returns true if all students have grades, or
+false if some students have not been given grades yet.
+
+#### `#average_grade`
+
+Write an `#average_grade` method that does one of two things:
+
+- if grading is finished, returns an average of all student grades. To calculate average, add all values together and divide by the number of values
+- if grading is not finished, returns a string 'Grading still in progress.'
