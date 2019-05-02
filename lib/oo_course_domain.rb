@@ -1,75 +1,78 @@
 class Student
-  attr_accessor :name, :course, :grade
-
   @@all = []
+
+  def self.all
+    @@all
+  end
+
+  attr_accessor :name
+  attr_accessor :course, :grade
 
   def initialize(name)
     @name = name
+    @course = nil
     @grade = nil
     @@all << self
   end
 
-  def self.all
-    @@all
+  def has_grade?
+    !@grade.nil?
   end
 end
 
 class Course
-  attr_accessor :name
-
   @@all = []
-
-  def initialize(name)
-    @name = name
-    @@all << self
-  end
 
   def self.all
     @@all
   end
 
-  def add_student(student)
-    student.course = self
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+    @@all.push(self)
+  end
+
+  def enroll_student(s)
+    s.course = self
+  end
+
+  def enroll_student_by_name(name)
+    s = Student.new(name)
+    enroll_student(s)
   end
 
   def students
-    Student.all.select {|student| student.course == self}
+    Student.all.select{|student| student.course === self}
   end
 
-  def add_student_by_name(student_name_string)
-    student = Student.new(student_name_string)
-    student.course = self
-  end
-
-  def self.student_count
-      Student.all.count
-  end
-
-  def add_grade(student, grade)
-    student.grade = grade
+  def add_grade(s, gradeInt)
+    s.grade = gradeInt
   end
 
   def all_existing_grades
-    self.students.select{|student| student.grade != nil }.map{|student| student.grade}
+    self.students.select(&:has_grade?).map(&:grade)
   end
 
   def all_students_graded?
-    all_existing_grades.length > 0 && all_existing_grades.length == self.students.length
+    return false if self.students.length == 0
+    return self.students.all?(&:has_grade?)
   end
 
   def average_grade
     if all_students_graded?
-      (students.map{|student| student.grade }.inject{|sum, n| sum + n }) / ( students.length)
+      grades.reduce(:+) / self.students.length
     else
-      'Grading still in progress.'
+       'Grading still in progress.'
     end
   end
 
-  def print_grades
-    students.each{|student| puts student.name + ": " + student.grade.to_s }
+  def grades
+    self.students.map(&:grade)
   end
 
-  def self.student_count
-      Student.all.count
+  def print_grades
+    puts students.reduce(""){ |memo, s| memo += "#{s.name}: #{s.grade}\n" }
   end
 end
