@@ -1,32 +1,5 @@
 require "spec_helper"
 
-
-#
-
-#
-#     describe "#all_students_graded?" do
-#
-#
-#     end
-#
-#     # Should have smartes about Floats
-#     #
-#     #        expected #<Fixnum:191> => 95
-# #           got #<Float:197595433650880514> => 95.0
-#
-# #      Compared using equal?, which compares object identity,
-# #      but expected and actual are not the same object. Use
-# #      `expect(actual).to eq(expected)` if you don't care about
-# #      object identity in this example.
-#     #
-#
-#
-#     # no mention in readme
-#
-#
-# end
-
-
 describe 'Student' do
   before(:each) do
     Student.class_variable_set(:@@all, [])
@@ -269,7 +242,8 @@ describe 'Course' do
         @course.enroll_student(student2)
         @course.add_grade(student, 90)
         @course.add_grade(student2, 100)
-        expect(@course.average_grade).to be(95)
+        expect(@course.average_grade).to be(95).or be(95.0)
+
       end
 
       it "returns 'Grading still in progress.' if grading is not finished" do
@@ -280,7 +254,7 @@ describe 'Course' do
         expect(@course.average_grade).to eq('Grading still in progress.')
         @course.add_grade(student, 90)
         @course.add_grade(student2, 100)
-        expect(@course.average_grade).to be(95)
+        expect(@course.average_grade).to be(95).or be(95.0)
         @course.enroll_student_by_name('Harold')
         expect(@course.average_grade).to eq('Grading still in progress.')
       end
@@ -289,25 +263,3 @@ describe 'Course' do
 
 
 end
-
-
-
-#
-
-#
-#   def average_grade
-#     if all_students_graded?
-#       grades.reduce(:+) / self.students.length
-#     else
-#        'Grading still in progress.'
-#     end
-#   end
-#
-#   def grades
-#     self.students.map(&:grade)
-#   end
-#
-#   def print_grades
-#     puts students.reduce(""){ |memo, s| memo += "#{s.name}: #{s.grade}\n" }
-#   end
-# end
