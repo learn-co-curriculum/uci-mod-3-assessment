@@ -1,5 +1,32 @@
 require "spec_helper"
 
+
+#
+
+#
+#     describe "#all_students_graded?" do
+#
+#
+#     end
+#
+#     # Should have smartes about Floats
+#     #
+#     #        expected #<Fixnum:191> => 95
+# #           got #<Float:197595433650880514> => 95.0
+#
+# #      Compared using equal?, which compares object identity,
+# #      but expected and actual are not the same object. Use
+# #      `expect(actual).to eq(expected)` if you don't care about
+# #      object identity in this example.
+#     #
+#
+#
+#     # no mention in readme
+#
+#
+# end
+
+
 describe 'Student' do
   before(:each) do
     Student.class_variable_set(:@@all, [])
@@ -10,135 +37,157 @@ describe 'Student' do
     @student5 = Student.new('Cynthia')
   end
 
-  describe '@@all' do
-    it 'is a class variable set to an array' do
-      expect(Student.class_variable_get(:@@all)).to be_a(Array)
+  describe 'Class Variables' do
+    describe '@@all' do
+      it 'is a class variable set to an array' do
+        expect(Student.class_variable_get(:@@all)).to be_a(Array)
+      end
     end
   end
 
-  describe '#new' do
-    it 'is initialized with an argument of a name' do
-      expect { Student.new('Jackie') }.to_not raise_error
-    end
+  describe 'Initialization' do
+    describe '#new' do
+      it 'is initialized with an argument of a name' do
+        expect { Student.new('Hank') }.to_not raise_error
+      end
 
-    it 'pushes new instances into a class variable called @@all upon initialization' do
-      expect(Student.class_variable_get(:@@all)).to match([@student, @student2, @student3, @student4, @student5])
-    end
-  end
-
-  describe '.all' do
-    it 'is a class method that returns an array of all student instances that have been created' do
-      expect(Student.all).to match([@student, @student2, @student3, @student4, @student5])
+      it 'pushes new instances into a class variable called @@all upon initialization' do
+        expect(Student.class_variable_get(:@@all)).to match([@student, @student2, @student3, @student4, @student5])
+      end
     end
   end
 
-  describe '#name' do
-    it 'has a name' do
-      expect(@student.name).to eq('Marisa')
-      expect(@student2.name).to eq('Ian')
+  describe 'Class Methods' do
+    describe '.all' do
+      it 'is a class method that returns an array of all student instances that have been created' do
+        expect(Student.all).to match([@student, @student2, @student3, @student4, @student5])
+      end
     end
   end
 
-  describe '#course' do
-    it 'belongs to a course' do
-      history = Course.new('History')
-      @student.course = history
-      expect(@student.course).to eq(history)
+
+  describe 'Attribute Accessors' do
+    describe '#name ' do
+      it "returns a student's name" do
+        expect(@student.name).to eq('Marisa')
+        expect(@student2.name).to eq('Ian')
+      end
+
+      it "can be reassigned" do
+        expect(@student.name).to eq('Marisa')
+        @student.name = 'Mari'
+        expect(@student.name).to eq('Mari')
+      end
+    end
+
+    describe '#course' do
+      it "is set to `nil` initially" do
+        expect(@student.course).to eq(nil)
+        expect(@student2.course).to eq(nil)
+      end
+
+      it "returns a student's course once assigned" do
+        history = Course.new('History')
+        @student.course = history
+        expect(@student.course).to eq(history)
+      end
+    end
+
+    describe '#grade' do
+      it "is set to `nil` initially" do
+        expect(@student.grade).to eq(nil)
+        expect(@student2.grade).to eq(nil)
+      end
+
+      it "returns a student's grade once assigned" do
+        @student.grade = 100
+        expect(@student.grade).to eq(100)
+      end
     end
   end
 
-  describe '#grade' do
-    it 'can have a grade' do
-      expect(@student.grade).to eq(nil)
-      @student.grade = 90
-      expect(@student.grade).to eq(90)
+  describe 'Instance Methods' do
+    describe '#has_grade?' do
+      it 'checks if student has received a grade, returns true if student has a grade, false if not' do
+        expect(@student.has_grade?).to eq(false)
+        @student.grade = 90
+        expect(@student.has_grade?).to eq(true)
+      end
     end
   end
 end
 
-describe "Course" do
-    before(:each) do
-      Student.class_variable_set(:@@all, [])
-      Course.class_variable_set(:@@all,[])
-      @course = Course.new("French")
-    end
+describe 'Course' do
+  before(:each) do
+    Course.class_variable_set(:@@all, [])
+    @course = Course.new('Spanish 101')
+    @course2 = Course.new('Spanish 201: Basic Conversation')
+    @course3 = Course.new('Spanish 301: Natural Dialogue')
+  end
 
-    describe "#new" do
-      it "is initialized with a name" do
-        expect{Course.new("History")}.to_not raise_error
-      end
-
-      it 'pushes new instances into a class variable called @@all upon initialization' do
-        expect(Course.class_variable_get(:@@all)).to include(@course)
-      end
-    end
-
+  describe 'Class Variables' do
     describe '@@all' do
       it 'is a class variable set to an array' do
         expect(Course.class_variable_get(:@@all)).to be_a(Array)
       end
     end
+  end
 
+  describe 'Initialization' do
+    describe '#new' do
+      it 'is initialized with an argument of a name' do
+        expect { Course.new('Spanish 202: Summer Review') }.to_not raise_error
+      end
+
+      it 'pushes new instances into a class variable called @@all upon initialization' do
+        expect(Course.class_variable_get(:@@all)).to match([@course, @course2, @course3])
+      end
+    end
+  end
+
+  describe 'Class Methods' do
     describe '.all' do
       it 'is a class method that returns an array of all course instances that have been created' do
-        expect(Course.all).to match([@course])
+        expect(Course.all).to match([@course, @course2, @course3])
       end
     end
+  end
 
 
-    describe "#name" do
-      it "has an attr_accessor for name, allowing for both reading and writint" do
-        expect(@course.name).to eq("French")
-        @course.name = "French 201: Conversation"
-        expect(@course.name).to eq("French 201: Conversation")
+  describe 'Attribute Accessors' do
+    describe '#name ' do
+      it "returns the name of a course" do
+        expect(@course.name).to eq('Spanish 101')
+        expect(@course2.name).to eq('Spanish 201: Basic Conversation')
+      end
+
+      it "can be reassigned" do
+        expect(@course3.name).to eq('Spanish 301: Natural Dialogue')
+        @course3.name = 'Spanish 301: Speaking Naturally'
+        expect(@course3.name).to eq('Spanish 301: Speaking Naturally')
       end
     end
+  end
 
-    describe "#add_student" do
-      it "takes in an argument of a student and associates that student with the course by telling the student that it belongs to that course" do
-
+  describe 'Instance Methods' do
+    describe '#enroll_student' do
+      it 'takes in a student instance and assigns that student a course' do
         amy = Student.new("Amy")
-        @course.add_student(amy)
+        @course.enroll_student(amy)
         expect(amy.course).to eq(@course)
       end
     end
 
-    describe "#students" do
-      it "returns a collection of students specific to this class instance" do
-        student = Student.new('Nadia')
-        student2 = Student.new('Liz')
-        @course.add_student(student)
-        @course.add_student(student2)
-        expect(@course.students).to match([student,student2])
-        course2 = Course.new('History')
-        student3 = Student.new('Ian')
-        course2.add_student(student3)
-        expect(@course.students).to match([student,student2])
-        expect(course2.students).to match([student3])
-
-      end
-    end
-
-    describe "#add_student_by_name" do
-      it "takes in an argument of a student name, creates a new student with it and associates the student and course" do
-        @course.add_student_by_name("Julia")
+    describe '#enroll_student_by_name' do
+      it 'takes in a student name, creates a student instance, and enrolls that student' do
+        @course.enroll_student_by_name("Julia")
         expect(@course.students.last.name).to eq("Julia")
         expect(@course.students.last.course).to eq(@course)
       end
     end
 
-    describe ".student_count" do
-      xit "is a class method that returns the total number of students associated to all existing courses" do
-        student = Student.new('Nadia')
-        student2 = Student.new('Liz')
-        expect(Course.student_count).to eq(2)
-        student3 = Student.new('Liz')
-        expect(Course.student_count).to eq(3)
-      end
-    end
-
-    describe "#add_grade" do
-      it "takes in two arguments, a student and an Integer grade, sets the student's grade using the student's attribute accessor" do
+    describe '#add_grade' do
+      it "takes in two arguments, a student instance and an integer grade, sets the student's grade" do
         student = Student.new('Nadia')
         student2 = Student.new('Liz')
         @course.add_grade(student, 90)
@@ -148,89 +197,117 @@ describe "Course" do
       end
     end
 
-    describe "#all_existing_grades" do
-      it "returns a collection of all added grades and ignores any ungraded students" do
+    describe '#students' do
+      it "returns an empty array if no students are enrolled in a course" do
+        expect(@course.students).to match([])
+      end
+
+      it "returns an array of all students who are enrolled in a course" do
         student = Student.new('Nadia')
         student2 = Student.new('Liz')
-        @course.add_student(student)
-        @course.add_student(student2)
-        @course.add_grade(student, 90)
-        @course.add_grade(student2, 100)
+        student3 = Student.new('Mike')
+        student4 = Student.new('Matt')
 
-        expect(@course.all_existing_grades).to match([90,100])
-        student3 = Student.new('Enzha')
-        expect(@course.all_existing_grades).to match([90,100])
+        @course.enroll_student(student)
+        @course.enroll_student(student2)
+        @course2.enroll_student(student3)
+
+        expect(@course.students).to match([student, student2])
+        expect(@course2.students).to match([student3])
       end
+    end
+
+    describe '#all_existing_grades' do
+      it "returns a collection of all added grades and ignores any ungraded students" do
+         student = Student.new('Nadia')
+         student2 = Student.new('Liz')
+
+         @course.enroll_student(student)
+         @course.enroll_student(student2)
+         @course.add_grade(student, 90)
+         @course.add_grade(student2, 100)
+
+         expect(@course.all_existing_grades).to match([90,100])
+         student3 = Student.new('Enzha')
+         expect(@course.all_existing_grades).to match([90,100])
+       end
     end
 
     describe "#all_students_graded?" do
 
-      it "if there are students enrolled in the course, checks returns true if all students have grades, or false if some students do not have grades" do
-
-        expect(@course.all_students_graded?).to be(false)
-
+      it "returns true if all enrolled students have been assigned grades" do
         student = Student.new('Nadia')
-        @course.add_student(student)
-        expect(@course.all_students_graded?).to be(false)
-
         student2 = Student.new('Liz')
-        @course.add_student(student2)
+        @course.enroll_student(student)
+        @course.enroll_student(student2)
         @course.add_grade(student, 90)
         @course.add_grade(student2, 100)
-
         expect(@course.all_students_graded?).to be(true)
-        @course.add_student_by_name('Harold')
+      end
+
+      it "returns false if some enrolled students have yet to receive grades" do
+        student = Student.new('Nadia')
+        student2 = Student.new('Liz')
+        @course.enroll_student(student)
+        @course.enroll_student(student2)
+        @course.add_grade(student, 90)
         expect(@course.all_students_graded?).to be(false)
+      end
 
+      it "returns false if there are no students enrolled in the course" do
+        expect(@course.all_students_graded?).to be(false)
+        expect(@course2.all_students_graded?).to be(false)
+        expect(@course3.all_students_graded?).to be(false)
       end
     end
 
-    # Should have smartes about Floats
-    # 
-    #        expected #<Fixnum:191> => 95
-#           got #<Float:197595433650880514> => 95.0
-
-#      Compared using equal?, which compares object identity,
-#      but expected and actual are not the same object. Use
-#      `expect(actual).to eq(expected)` if you don't care about
-#      object identity in this example.
-    #
     describe "#average_grade" do
-      it "if grading is finished, returns an average of all student grades in the class" do
+      it "returns an average of all student grades in the class if grading is finished" do
         student = Student.new('Nadia')
         student2 = Student.new('Liz')
-        @course.add_student(student)
-        @course.add_student(student2)
+        @course.enroll_student(student)
+        @course.enroll_student(student2)
         @course.add_grade(student, 90)
         @course.add_grade(student2, 100)
         expect(@course.average_grade).to be(95)
       end
 
-      it "if grading is not finished, returns 'Grading still in progress.'" do
+      it "returns 'Grading still in progress.' if grading is not finished" do
         student = Student.new('Nadia')
         student2 = Student.new('Liz')
-        @course.add_student(student)
-        @course.add_student(student2)
+        @course.enroll_student(student)
+        @course.enroll_student(student2)
         expect(@course.average_grade).to eq('Grading still in progress.')
         @course.add_grade(student, 90)
         @course.add_grade(student2, 100)
         expect(@course.average_grade).to be(95)
-        @course.add_student_by_name('Harold')
+        @course.enroll_student_by_name('Harold')
         expect(@course.average_grade).to eq('Grading still in progress.')
       end
     end
+  end
 
-    # no mention in readme
-    describe "#print_grades" do
-      it "is a class method that returns the total number of students associated to all existing courses" do
-        student = Student.new('Nadia')
-        student2 = Student.new('Liz')
-        @course.add_student(student)
-        @course.add_student(student2)
-        @course.add_grade(student, 90)
-        @course.add_grade(student2, 100)
-        expect{@course.print_grades}.to output("Nadia: 90\nLiz: 100\n").to_stdout
-      end
-    end
 
 end
+
+
+
+#
+
+#
+#   def average_grade
+#     if all_students_graded?
+#       grades.reduce(:+) / self.students.length
+#     else
+#        'Grading still in progress.'
+#     end
+#   end
+#
+#   def grades
+#     self.students.map(&:grade)
+#   end
+#
+#   def print_grades
+#     puts students.reduce(""){ |memo, s| memo += "#{s.name}: #{s.grade}\n" }
+#   end
+# end
