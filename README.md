@@ -15,17 +15,25 @@ instances of `Course`s and one to handle `Student`s. Write your solution in
 
 ### Student Class
 
-#### `@@all` Class Variable
+#### Class Variables
 
-- Create an `@@all` class variable set to an array.
-- Write a `.all` class method that returns an array of all student instances
-  that have been created.
+##### `@@all`
 
-#### Initializing Student Instances
+Create an `@@all` class variable set to an array.
 
-Student instances should be initialized with an argument of a `name`. On
-initialization, the new student instance should be pushed into the `@@all` class
-variable.
+#### Initialization
+
+##### `#new`
+
+Initialize student instances with a string name. On initialization, the new
+student instance should be pushed into the `@@all` class variable.
+
+#### Class Methods
+
+##### `.all`
+
+Write a `.all` class method that returns this variable. This variable will be
+used to contain all student instances that have been created.
 
 #### Attribute Accessors
 
@@ -33,67 +41,78 @@ Students instances should have `name`, `course` and `grade` accessors. Since we
 have only assigned `name` when initializing, `course` and `grade` by default
 should return `nil` until they are assigned.
 
-### Course Class
+#### Instance Methods
 
-#### `@@all` Class Variable
+##### `#has_grade?`
 
-- Create an `@@all` class variable set to an array.
-- Write a `.all` class method that returns an array of all course instances
-  that have been created.
+Write a `has_grade?` method that checks if the student's grade is assigned or is
+still the default `nil`. Return true if student has a grade, false if not.
 
-#### Initializing Course Instances
+### Course
 
-Course instances should be initialized with an argument of a `name`. On
+#### Class Variables
+
+##### `@@all`
+
+Create an `@@all` class variable set to an array.
+
+#### Initialization
+
+##### `#new`
+
+Course instances should be initialized with a `name` argument. On
 initialization, the new course instance should be pushed into the `@@all` class
 variable.
+
+#### Class Methods
+
+##### `.all`
+
+Write a `.all` class method that returns an array of all course instances that
+have been created.
 
 #### Attribute Accessors
 
 Course instances should have a `name` attribute accessor.
 
-#### `add_student`
+#### Instance Methods
 
-Write an `#add_student` instance method that takes in a student instance as an
-argument and associates that student with the course. It should do this by
+##### `#enroll_student`
+
+Write an `#enroll_student` instance method that takes in a student instance as
+an argument and associates that student with the course. It should do this by
 telling the student that it belongs to this particular course.
 
-#### `#students`
+##### `#enroll_student_by_name`
+
+Write an `#enroll_student_by_name` instance method that takes in a student name
+as a string, creates a new student instance, and associates that student with
+the course instance.
+
+##### `#add_grade`
+
+Write an `#add_grade` instance method that takes two arguments, a student instance and an
+Integer grade, and sets the student's grade.
+
+##### `#students`
 
 Write a `#students` instance method that returns a collection of student
-instances unique to the course instance.
+instances that are enrolled in a course.
 
-#### `#add_student_by_name`
+##### `#all_existing_grades`
 
-Write an `#add_student_by_name` instance method that takes in a student name as a
-string, creates a new student instance, and associates that student with the
-course instance.
+Write an `#all_existing_grades` instance method that returns a collection of all
+grades, leaving out any ungraded students.
 
-#### `.student_count`
+##### `#all_students_graded?`
 
-Write a `.student_count` **class** method that returns the total number of all
-students in all class instances.
+Write an `#all_students_graded?` instance method that does one of three things:
 
-#### `#add_grade`
+- Returns true if all enrolled students have been assigned grades
+- Returns false if some enrolled students have yet to receive grades
+- Returns false if there are no students enrolled in the course
 
-Write an `#add_grade` instance method that takes in two arguments, a student
-instance and an integer grade, then sets the student's grade using the student's
-`grade` attribute accessor.
-( might not want to spec the how)
-
-#### `#all_existing_grades`
-
-Write an `#all_existing_grades` method that returns a collection of all added
-grades, ignoring any ungraded students.
-
-#### `#all_students_graded?`
-
-Write an `#all_students_graded?` method that checks if there are students
-enrolled in the course. If so, it returns true if all students have grades, or
-false if some students have not been given grades yet.
-
-(conflated, confusing)
-
-#### `#average_grade`
+##### `#average_grade`
 
 Write an `#average_grade` method that does one of two things:
 
